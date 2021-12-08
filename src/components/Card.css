@@ -1,0 +1,52 @@
+.card_image {
+    height: 200px;
+    object-fit: contain;
+    background-color: #f5f5f5;
+}
+
+.card_iconHeart {
+    font-size: 20px !important;
+    color: #ff0000 !important;
+}
+
+.card_iconEdit {
+    font-size: 18px !important;
+}
+
+.card_iconDelete {
+    font-size: 20px !important;
+}
+
+.card_personInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 15px 0 0 0;
+    align-items: flex-start;
+}
+
+.card_personInfo > div {
+    display: flex;
+}
+
+.card_personInfo > div > p {
+    margin-bottom: 3px;
+}
+
+.card_infoIcon {
+    font-size: 16px !important;
+    margin-right: 10px;
+    align-items: center;
+}
+
+.ant-card-actions {
+    background-color: #fafafa;
+}
+
+.ant-card-actions > li > span > .anticon {
+    width: fit-content;
+}
+
+.ant-card-actions > li > span {
+    cursor: auto;
+}

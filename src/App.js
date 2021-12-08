@@ -2,18 +2,26 @@ import "./App.css";
 import "antd/dist/antd.css";
 import { Row, Modal, Form, Input } from "antd";
 import { useEffect, useState } from "react";
-import placeholderInstance from "./axios/axios";
+import axios from "./axios/axios";
 import Card from "./components/Card";
 
 function App() {
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    // Data to display
     const [data, setData] = useState([]);
+
+    // Showing progress bar
     const [loading, setLoading] = useState(true);
+
+    // Taking inputs from form and updating them
     const [fields, setFields] = useState();
     const [edittingPerson, setEdittingPerson] = useState(-1);
-    const [windowWidth, setWindowWidth] = useState(null);
 
+    // For modal opening
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    // Function to handle update of information from modal
     const handleOk = () => {
+        // setting up new data after update
         setData(
             data.map((item) =>
                 item.id === edittingPerson
@@ -27,18 +35,22 @@ function App() {
                     : item
             )
         );
+        // closing modal
         setIsModalVisible(false);
     };
 
+    // Function to close modal
     const handleCancel = () => {
         setIsModalVisible(false);
     };
 
+    // Get data from api using axios
     useEffect(() => {
-        placeholderInstance({
+        axios({
             mathod: "get",
             url: "/users",
         }).then((response) => {
+            // setting only relevant data
             setData(
                 response.data.map((person) => ({
                     id: person.id,
@@ -49,33 +61,20 @@ function App() {
                     imageUrl: `https://avatars.dicebear.com/v2/avataaars/${person.username}.svg?options[mood][]=happy`,
                 }))
             );
+
+            // by default loading is true so after getting all data setting it to false
             setLoading(false);
         });
     }, []);
 
-    useEffect(() => {
-        function handleResize() {
-            setWindowWidth(window.innerWidth);
-        }
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
+    // Deleting the item
     const handleDelete = (id) => {
         setData(data.filter((value) => value.id !== id));
     };
 
     return (
-        <div
-            className="app"
-            style={{
-                margin: "10px",
-                paddingBottom: "10px",
-                height: "100%",
-                boxSizing: "border-box",
-            }}
-        >
+        <div className="app">
+            {/* if loading display progress bar else display actual content  */}
             {loading ? (
                 <div className="spinner">
                     <div className="bounce1"></div>
@@ -85,6 +84,7 @@ function App() {
             ) : (
                 <div className="app_container">
                     <Row gutter={[16, 24]}>
+                        {/* mapping over each item and passing it to card item  */}
                         {data.map((person) => (
                             <Card
                                 key={person.id}
@@ -93,7 +93,6 @@ function App() {
                                 setFields={setFields}
                                 handleDelete={handleDelete}
                                 setEdittingPerson={setEdittingPerson}
-                                windowWidth={windowWidth}
                             />
                         ))}
                     </Row>
@@ -108,6 +107,7 @@ function App() {
                             labelCol={{ span: 8 }}
                             wrapperCol={{ span: 16 }}
                             autoComplete="off"
+                            // setting fields default value and on change
                             fields={fields}
                             onFieldsChange={(_, allFields) => {
                                 setFields(allFields);

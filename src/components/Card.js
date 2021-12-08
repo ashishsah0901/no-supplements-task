@@ -10,18 +10,24 @@ import {
 } from "@ant-design/icons";
 import Meta from "antd/lib/card/Meta";
 import { Card, Col } from "antd";
+import "./Card.css";
 
-const Person = ({
-    person,
-    setIsModalVisible,
-    handleDelete,
-    setFields,
-    setEdittingPerson,
-    windowWidth,
-}) => {
+const Person = (props) => {
+    // maintaning the state whether liked or not
     const [liked, setLiked] = useState(false);
 
+    // Destructuring props
+    const {
+        person,
+        setIsModalVisible,
+        handleDelete,
+        setFields,
+        setEdittingPerson,
+    } = props;
+
+    // Function to show modal
     const showModal = () => {
+        // set Defalt values of the feilds
         setFields([
             {
                 name: ["name"],
@@ -40,101 +46,72 @@ const Person = ({
                 value: person.website,
             },
         ]);
+
+        // setting the id of the editting elememt for updating the data
         setEdittingPerson(person.id);
+
+        // hiding theb modal
         setIsModalVisible(true);
     };
 
     return (
         <Col
             className="gutter-row"
-            span={windowWidth > 1200 ? 6 : windowWidth > 768 ? 8 : 24}
+            // setting responsive
+            span={
+                window.innerWidth > 1200 ? 6 : window.innerWidth > 768 ? 8 : 24
+            }
         >
             <Card
+                // person image
                 cover={
                     <img
+                        className="card_image"
                         alt="example"
                         src={person.imageUrl}
-                        style={{
-                            height: "200px",
-                            objectFit: "contain",
-                            backgroundColor: "#F5F5F5",
-                        }}
                     />
                 }
+                // icon buttons for like edit and delete
                 actions={[
+                    // show filled icon when liked and outlined when not
                     !liked ? (
                         <HeartOutlined
-                            style={{
-                                fontSize: "20px",
-                                color: "#FF0000",
-                                cursor: "pointer",
-                                zIndex: "1",
-                            }}
+                            className="card_iconHeart"
                             onClick={() => setLiked(!liked)}
                         />
                     ) : (
                         <HeartFilled
-                            style={{
-                                fontSize: "20px",
-                                color: "#FF0000",
-                            }}
+                            className="card_iconHeart"
                             onClick={() => setLiked(!liked)}
                         />
                     ),
                     <EditOutlined
-                        style={{ fontSize: "18px" }}
+                        className="card_iconEdit"
                         key="edit"
                         onClick={showModal}
                     />,
                     <DeleteFilled
                         type="message"
-                        style={{
-                            fontSize: "20px",
-                        }}
+                        className="card_iconDelete"
                         theme="outlined"
                         onClick={() => handleDelete(person.id)}
                     />,
                 ]}
             >
+                {/* meta data which includes name email phone and webite  */}
                 <Meta title={person.name} />
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "flex-start",
-                        margin: "15px 0 0 0",
-                        alignItems: "flex-start",
-                    }}
-                >
-                    <div style={{ display: "flex" }}>
-                        <MailOutlined
-                            style={{
-                                fontSize: "16px",
-                                marginRight: "10px",
-                                alignItems: "center",
-                            }}
-                        />
-                        <p style={{ marginBottom: "3px" }}>{person.email}</p>
+                <div className="card_personInfo">
+                    <div>
+                        <MailOutlined className="card_infoIcon" />
+                        <p>{person.email}</p>
                     </div>
-                    <div style={{ display: "flex" }}>
-                        <PhoneOutlined
-                            style={{
-                                fontSize: "16px",
-                                marginRight: "10px",
-                                alignItems: "center",
-                            }}
-                        />
-                        <p style={{ marginBottom: "3px" }}>{person.phone}</p>
+                    <div>
+                        <PhoneOutlined className="card_infoIcon" />
+                        <p>{person.phone}</p>
                     </div>
-                    <div style={{ display: "flex" }}>
-                        <GlobalOutlined
-                            style={{
-                                fontSize: "16px",
-                                marginRight: "10px",
-                                alignItems: "center",
-                            }}
-                        />
-                        <p style={{ marginBottom: "3px" }}>{person.website}</p>
+                    <div>
+                        <GlobalOutlined className="card_infoIcon" />
+                        <p>{person.website}</p>
                     </div>
                 </div>
             </Card>

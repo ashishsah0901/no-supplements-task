@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const placeholderInstance = axios.create({
+const instance = axios.create({
     baseURL: "https://jsonplaceholder.typicode.com",
 });
 
-export default placeholderInstance;
+export default instance;
